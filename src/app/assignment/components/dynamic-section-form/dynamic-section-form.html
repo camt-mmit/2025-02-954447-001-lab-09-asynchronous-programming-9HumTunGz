@@ -1,0 +1,31 @@
+<button type="button" (click)="addSection()" class="btn-add-section">+ Section</button>
+
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <div formArrayName="sections">
+    <div
+      *ngFor="let section of sections.controls; let i = index"
+      [formGroupName]="i"
+      class="section-container"
+    >
+      <div class="section-header">
+        <button type="button" (click)="addNumber(i)">+ Number</button>
+        <span>Section {{ i + 1 }}</span>
+        <button type="button" (click)="removeSection(i)" class="btn-delete">🗑️</button>
+      </div>
+
+      <div formArrayName="numbers">
+        <div *ngFor="let num of getNumbers(i).controls; let j = index" class="number-row">
+          <label>Number {{ j + 1 }}</label>
+          <input type="number" [formControlName]="j" />
+          <button type="button" (click)="removeNumber(i, j)" class="btn-delete-small">🗑️</button>
+        </div>
+      </div>
+
+      <div class="result-area">
+        <strong>Result: {{ calcSum(i) | number }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="sections.length === 0" class="btn-save">Save Form</button>
+</form>

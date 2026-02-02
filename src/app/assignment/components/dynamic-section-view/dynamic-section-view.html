@@ -1,0 +1,13 @@
+<div *ngIf="data$ | async as data; else loading">
+  <div *ngIf="data.length === 0">
+    <h1 style="color: red; text-align: center">Not Found!!!</h1>
+  </div>
+
+  <div *ngFor="let section of data; let i = index" class="view-card">
+    <h3>Section {{ i + 1 }}</h3>
+    <div *ngFor="let n of section; let j = index">Number {{ j + 1 }}: {{ n }}</div>
+    <hr />
+    <strong>Result: {{ getSum(section) | number }}</strong>
+  </div>
+</div>
+<ng-template #loading>กำลังโหลดข้อมูล...</ng-template>
