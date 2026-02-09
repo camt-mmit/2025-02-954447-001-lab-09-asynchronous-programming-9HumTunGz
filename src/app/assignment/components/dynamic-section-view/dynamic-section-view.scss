@@ -1,0 +1,98 @@
+/* Container หลักของหน้ารายงาน */
+._items-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+._items-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+/* การ์ดแต่ละ Section */
+._item-container {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  border-left: 4px solid #6366f1; /* เพิ่มเส้นสีให้นำสายตา */
+  background: #f8fafc;
+  border-radius: 0 12px 12px 0;
+}
+
+._item-container h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  color: #475569;
+}
+
+/* ตัวเลขลำดับ Section/Number */
+.app-cl-number {
+  font-family: 'JetBrains Mono', 'Courier New', monospace; /* ใช้ฟอนต์แนวตัวเลขจะดูโปรขึ้น */
+  font-weight: 600;
+}
+
+._item-title-no {
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* จัดเลย์เอาต์ List รายการตัวเลข */
+._values-container {
+  display: grid;
+  grid-template-columns: auto 1fr; /* ชื่ออยู่ซ้าย ค่าอยู่ขวา */
+  gap: 0.75rem 2rem;
+  margin: 0;
+}
+
+._values-container dt {
+  color: #64748b;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+._value-title-no {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+._values-container dd {
+  margin: 0;
+  text-align: right;
+  font-size: 1rem;
+  color: #1e293b;
+  border-bottom: 1px dashed #e2e8f0; /* เพิ่มเส้นประคั่นบรรทัดให้ดูง่าย */
+  padding-bottom: 2px;
+}
+
+/* สไตล์พิเศษสำหรับแถวสรุปผล (Result) */
+._values-total {
+  grid-column: 2; /* ให้ตัวเลขอยู่ฝั่งขวา */
+  font-size: 1.25rem !important;
+  color: #6366f1 !important;
+  border-bottom: 2px double #6366f1 !important; /* เส้นคู่ใต้ผลรวม */
+  margin-top: 8px !important;
+  font-weight: 800 !important;
+}
+
+dt:has(+ ._values-total) {
+  grid-column: 1;
+  margin-top: 8px;
+  font-weight: 700;
+  color: #1e293b;
+}

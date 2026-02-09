@@ -1,0 +1,170 @@
+/* Container หลัก */
+.assignment-wrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #334155;
+}
+
+/* แถบเครื่องมือด้านบน */
+.actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+/* จัดการกล่อง Section แต่ละอัน */
+.sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.section-box:hover {
+  border-color: #cbd5e1;
+}
+
+/* ส่วนหัวของ Section */
+.section-header {
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.number-badge {
+  background: #6366f1;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+/* การจัดวาง Input Grid */
+.inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.input-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-item label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* จัดกลุ่ม Input กับปุ่มลบ */
+.field-group {
+  display: flex;
+  gap: 4px;
+}
+
+input[type='number'] {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+input[type='number']:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* ส่วนท้ายของ Section (Summary) */
+.section-footer {
+  background: #f1f5f9;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.result-value {
+  color: #0f172a;
+  font-size: 1.1rem;
+}
+
+/* ปุ่มต่างๆ */
+.app-cmp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.app-cmp-button:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.app-cl-filled {
+  background: #6366f1;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  gap: 8px;
+}
+
+.app-cl-filled:hover {
+  background: #4f46e5;
+}
+
+.app-cl-warn {
+  color: #ef4444;
+}
+
+.app-cl-warn:hover:not(:disabled) {
+  background: #fef2f2;
+  border-color: #fee2e2;
+}
+
+/* สถานะเมื่อ Form ถูก Lock */
+.form-locked {
+  opacity: 0.7;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ไอคอน */
+.material-symbols-outlined {
+  font-size: 1.2rem;
+}

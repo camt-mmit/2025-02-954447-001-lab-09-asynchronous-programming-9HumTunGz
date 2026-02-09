@@ -1,9 +1,27 @@
-import { Component } from '@angular/core';
-import { DynamicSectionFormComponent } from '../../components/dynamic-section-form/dynamic-section-form';
+import { ChangeDetectionStrategy, Component, effect, inject, resource } from '@angular/core';
+import { DynamicSectionForm } from '../../components/dynamic-section-form/dynamic-section-form';
+import { createDynamicSection } from '../../helpers';
+import { DynamicSectionDataStorage } from '../../services/dynamic-section-data.storage';
 
 @Component({
-  standalone: true,
-  imports: [DynamicSectionFormComponent],
-  template: `<app-dynamic-section-form></app-dynamic-section-form>`,
+  selector: 'app-dynamic-section-form-page',
+  imports: [DynamicSectionForm],
+  templateUrl: './dynamic-section-form-page.html',
+  styleUrl: './dynamic-section-form-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynamicSectionFormPage {}
+export class DynamicSectionFormPage {
+  private readonly dataStorage = inject(DynamicSectionDataStorage);
+
+  protected readonly dataResource = resource({
+    loader: async () => (await this.dataStorage.get()) ?? createDynamicSection(),
+  });
+
+  constructor() {
+    effect(async () => {
+      if (this.dataResource.hasValue()) {
+        await this.dataStorage.set(this.dataResource.value());
+      }
+    });
+  }
+}

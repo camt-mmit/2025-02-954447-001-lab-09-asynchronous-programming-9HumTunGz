@@ -1,19 +1,19 @@
-import { Injectable, signal } from '@angular/core';
-import { Observable, delay, of, tap } from 'rxjs';
+import { APP_ID, Injectable, inject } from '@angular/core';
 import { DynamicSection } from '../types';
+
+const keyId = 'dynamic-section-data';
 
 @Injectable({ providedIn: 'root' })
 export class DynamicSectionDataStorage {
-  private _data = signal<DynamicSection>([]);
+  private readonly keyName = `${inject(APP_ID)}-${keyId}` as const;
 
-  loadData(): Observable<DynamicSection> {
-    return of(this._data()).pipe(delay(500));
+  async get(): Promise<DynamicSection | null> {
+    // เปลี่ยนเป็น sessionStorage เพื่อความเป็นระเบียบของ session งาน
+    const data = sessionStorage.getItem(this.keyName);
+    return data ? JSON.parse(data) : null;
   }
 
-  saveData(newData: DynamicSection): Observable<void> {
-    return of(undefined).pipe(
-      delay(500),
-      tap(() => this._data.set(newData)),
-    );
+  async set(data: DynamicSection): Promise<void> {
+    sessionStorage.setItem(this.keyName, JSON.stringify(data));
   }
 }

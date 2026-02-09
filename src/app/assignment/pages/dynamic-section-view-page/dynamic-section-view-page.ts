@@ -1,16 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
+import { DynamicSectionView } from '../../components/dynamic-section-view/dynamic-section-view';
 import { DynamicSectionDataStorage } from '../../services/dynamic-section-data.storage';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: '../../components/dynamic-section-view/dynamic-section-view.html',
+  selector: 'app-dynamic-section-view-page',
+  imports: [DynamicSectionView],
+  templateUrl: './dynamic-section-view-page.html',
+  styleUrl: './dynamic-section-view-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicSectionViewPage {
-  data$ = inject(DynamicSectionDataStorage).loadData();
+  private readonly dataStorage = inject(DynamicSectionDataStorage);
 
-  getSum(section: readonly number[]): number {
-    return section.reduce((a, b) => a + (b || 0), 0);
-  }
+  protected readonly dataResource = resource({
+    loader: async () => await this.dataStorage.get(),
+  });
 }

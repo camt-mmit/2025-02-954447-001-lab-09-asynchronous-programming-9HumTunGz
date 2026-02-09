@@ -1,54 +1,44 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { DynamicSectionDataStorage } from '../../services/dynamic-section-data.storage';
+import { DecimalPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, model } from '@angular/core';
+import {FieldTree,applyEach,createMetadataKey,form,metadata,} from '@angular/forms/signals';
+import { createDynamicSectionItem, createDynamicSectionValue } from '../../helpers';
+import { DynamicSection } from '../../types';
 
 @Component({
   selector: 'app-dynamic-section-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [DecimalPipe],
   templateUrl: './dynamic-section-form.html',
+  styleUrl: './dynamic-section-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynamicSectionFormComponent {
-  private fb = inject(FormBuilder);
-  private storage = inject(DynamicSectionDataStorage);
+export class DynamicSectionForm {
+  readonly data = model.required<DynamicSection>();
 
-  form = this.fb.group({
-    sections: this.fb.array([]),
+  protected readonly totalKey = createMetadataKey<number>();
+
+  protected readonly form = form(this.data, (path) => {
+    applyEach(path, (item) => {
+      metadata(item, this.totalKey, ({ valueOf }) =>
+        valueOf(item).reduce((sum, val) => sum + (Number(val) || 0), 0),
+      );
+    });
   });
 
-  get sections() {
-    return this.form.get('sections') as FormArray;
-  }
+  protected onAddNewSection = () =>
+    this.form().value.update(v => [...v, createDynamicSectionItem()]);
 
-  addSection() {
-    this.sections.push(
-      this.fb.group({
-        numbers: this.fb.array([this.fb.control(0)]),
-      }),
-    );
-  }
+  protected onRemoveSection = (i: number) =>
+    this.form().value.update(v => v.filter((_, idx) => idx !== i));
 
-  getNumbers(sIdx: number) {
-    return this.sections.at(sIdx).get('numbers') as FormArray;
-  }
-  addNumber(sIdx: number) {
-    this.getNumbers(sIdx).push(this.fb.control(0));
-  }
-  removeNumber(sIdx: number, nIdx: number) {
-    this.getNumbers(sIdx).removeAt(nIdx);
-  }
-  removeSection(sIdx: number) {
-    this.sections.removeAt(sIdx);
-  }
+  protected onAddNumber = (node: FieldTree<DynamicSection[number]>) =>
+    node().value.update(v => [...v, createDynamicSectionValue()]);
 
-  calcSum(sIdx: number): number {
-    const vals = this.getNumbers(sIdx).value as number[];
-    return vals.reduce((a, b) => a + (Number(b) || 0), 0);
-  }
+  protected onRemoveNumber = (node: FieldTree<DynamicSection[number]>, i: number) =>
+    node().value.update(v => v.filter((_, idx) => idx !== i));
 
-  onSave() {
-    const data = this.form.getRawValue().sections.map((s: any) => s.numbers);
-    this.storage.saveData(data).subscribe(() => alert('Saved!'));
-  }
+  protected updateValue = (field: any, ev: Event) => {
+    const val = (ev.target as HTMLInputElement).value;
+    field().value.set(Number(val) || 0);
+  };
 }
